@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  app:
+    build: ./fleetly.app-server
+    container_name: fleetly-app
+    environment:
+      # DB
+      - DB_HOST=db
+      - DB_NAME=fleetly-db
+      - DB_PORT=27017
+      # DB credentials
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      # JWT
+      - JWT_EXPIRES_IN=1h
+      - JWT_SECRET=fleetly
+      # Server
+      - NODE_ENV=development
+      - PORT=3000
+    image: nodejs
+    links:
+      - db
+    ports:
+      - "3000:3000"
+    restart: always
+    volumes:
+      - ./fleetly.app-server:/usr/src/app
+
+  db:
+    command: [--auth]
+    container_name: fleetly-db
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    ports:
+      - "27017:27017"
+    volumes:
+      - dbdata:/data/db
+
+volumes:
+  dbdata:

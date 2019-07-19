@@ -1,2 +1,8 @@
 # All local fleetly projects
 fleetly.*
+
+# Enviroment
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
